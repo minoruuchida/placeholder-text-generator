@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Placeholder Text Generator</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    label, select, input, button, textarea { display: block; width: 100%; margin: 10px 0; }
+    textarea { height: 200px; }
+  </style>
+</head>
+<body>
+  <h1>Placeholder Text Generator</h1>
+
+  <label for="mode">Generate by:</label>
+  <select id="mode">
+    <option value="paragraphs">Paragraphs</option>
+    <option value="characters">Characters</option>
+  </select>
+
+  <label for="amount">Amount:</label>
+  <input type="number" id="amount" min="1" value="2" />
+
+  <button onclick="generateText()">Generate</button>
+  <textarea id="output" readonly></textarea>
+  <button onclick="copyText()">Copy to Clipboard</button>
+
+  <script>
+    const lorem =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet.";
+
+    function generateText() {
+      const mode = document.getElementById("mode").value;
+      const amount = parseInt(document.getElementById("amount").value);
+      let output = "";
+
+      if (mode === "paragraphs") {
+        for (let i = 0; i < amount; i++) {
+          output += lorem + "\n\n";
+        }
+      } else {
+        while (output.length < amount) {
+          output += lorem + " ";
+        }
+        output = output.slice(0, amount);
+      }
+
+      document.getElementById("output").value = output;
+    }
+
+    function copyText() {
+      const textarea = document.getElementById("output");
+      textarea.select();
+      document.execCommand("copy");
+      alert("Copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
