@@ -65,6 +65,15 @@
     button:hover {
       background-color: #2563eb;
     }
+    .outline-button {
+      background-color: white;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .outline-button:hover {
+      background-color: #f3f4f6;
+    }
 
     textarea {
       height: 200px;
@@ -87,7 +96,7 @@
 
     <button onclick="generateText()">Generate</button>
     <textarea id="output" readonly></textarea>
-    <button onclick="copyText()">Copy to Clipboard</button>
+    <button class="outline-button" onclick="copyText()">Copy to Clipboard</button>
   </div>
 
   <script>
