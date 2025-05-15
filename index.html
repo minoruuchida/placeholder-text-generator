@@ -22,22 +22,22 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
       max-width: 600px;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px; /* spacing between fields */
     }
 
     h1 {
-      margin-bottom: 20px;
       font-size: 1.8rem;
       text-align: center;
       color: #1f2937;
     }
 
     label {
-      margin-top: 15px;
       font-weight: 600;
     }
 
     select, input, textarea, button {
-      margin-top: 5px;
       padding: 10px;
       font-size: 1rem;
       width: 100%;
@@ -53,7 +53,6 @@
     }
 
     button {
-      margin-top: 15px;
       background-color: #3b82f6;
       color: white;
       font-weight: 600;
@@ -64,15 +63,6 @@
 
     button:hover {
       background-color: #2563eb;
-    }
-    .outline-button {
-      background-color: white;
-      color: #374151;
-      border: 1px solid #d1d5db;
-    }
-
-    .outline-button:hover {
-      background-color: #f3f4f6;
     }
 
     textarea {
@@ -96,14 +86,12 @@
 
     <button onclick="generateText()">Generate</button>
     <textarea id="output" readonly></textarea>
-    <button class="outline-button" onclick="copyText()">Copy to Clipboard</button>
   </div>
 
   <script>
     const loremIntro = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-    
+
     const loremSentences = [
-      // We purposely exclude `loremIntro` here to prevent duplication
       "Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
       "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.",
       "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.",
@@ -115,26 +103,26 @@
       "Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum.",
       "Maecenas adipiscing ante non diam sodales hendrerit."
     ];
-  
+
     function getRandomSentence() {
       return loremSentences[Math.floor(Math.random() * loremSentences.length)];
     }
-  
+
     function generateParagraph(includeIntro = false) {
-      const sentenceCount = Math.floor(Math.random() * 5) + 3; // 3 to 7 sentences
+      const sentenceCount = Math.floor(Math.random() * 5) + 3;
       let paragraph = includeIntro ? loremIntro + " " : "";
-  
+
       for (let i = 0; i < sentenceCount - (includeIntro ? 1 : 0); i++) {
         paragraph += getRandomSentence() + " ";
       }
       return paragraph.trim();
     }
-  
+
     function generateText() {
       const mode = document.getElementById("mode").value;
       const amount = parseInt(document.getElementById("amount").value);
       let output = "";
-  
+
       if (mode === "paragraphs") {
         for (let i = 0; i < amount; i++) {
           output += generateParagraph(i === 0) + "\n\n";
@@ -146,15 +134,14 @@
         }
         output = output.slice(0, amount);
       }
-  
-      document.getElementById("output").value = output;
-    }
-  
-    function copyText() {
-      const textarea = document.getElementById("output");
-      textarea.select();
+
+      const outputArea = document.getElementById("output");
+      outputArea.value = output;
+
+      // Auto-copy to clipboard
+      outputArea.select();
       document.execCommand("copy");
-      alert("Copied to clipboard!");
+      alert("Text copied to clipboard!");
     }
   </script>
 </body>
