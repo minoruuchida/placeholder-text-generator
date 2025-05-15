@@ -1,157 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Placeholder Text Generator</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9fafb;
-      color: #111827;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+<script>
+  const loremIntro = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+  
+  const loremSentences = [
+    // We purposely exclude `loremIntro` here to prevent duplication
+    "Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
+    "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.",
+    "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.",
+    "Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim.",
+    "Pellentesque congue. Ut in risus volutpat libero pharetra tempor.",
+    "Cras vestibulum bibendum augue. Praesent egestas leo in pede.",
+    "Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales.",
+    "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
+    "Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum.",
+    "Maecenas adipiscing ante non diam sodales hendrerit."
+  ];
+
+  function getRandomSentence() {
+    return loremSentences[Math.floor(Math.random() * loremSentences.length)];
+  }
+
+  function generateParagraph(includeIntro = false) {
+    const sentenceCount = Math.floor(Math.random() * 5) + 3; // 3 to 7 sentences
+    let paragraph = includeIntro ? loremIntro + " " : "";
+
+    for (let i = 0; i < sentenceCount - (includeIntro ? 1 : 0); i++) {
+      paragraph += getRandomSentence() + " ";
     }
+    return paragraph.trim();
+  }
 
-    .container {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-      max-width: 600px;
-      width: 100%;
-    }
+  function generateText() {
+    const mode = document.getElementById("mode").value;
+    const amount = parseInt(document.getElementById("amount").value);
+    let output = "";
 
-    h1 {
-      margin-bottom: 20px;
-      font-size: 1.8rem;
-      text-align: center;
-      color: #1f2937;
-    }
-
-    label {
-      margin-top: 15px;
-      font-weight: 600;
-    }
-
-    select, input, textarea, button {
-      margin-top: 5px;
-      padding: 10px;
-      font-size: 1rem;
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      box-sizing: border-box;
-    }
-
-    select:focus, input:focus, textarea:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-    }
-
-    button {
-      margin-top: 15px;
-      background-color: #3b82f6;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      border: none;
-    }
-
-    button:hover {
-      background-color: #2563eb;
-    }
-    .outline-button {
-      background-color: white;
-      color: #374151;
-      border: 1px solid #d1d5db;
-    }
-
-    .outline-button:hover {
-      background-color: #f3f4f6;
-    }
-
-    textarea {
-      height: 200px;
-      resize: vertical;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Placeholder Text Generator</h1>
-
-    <label for="mode">Generate by:</label>
-    <select id="mode">
-      <option value="paragraphs">Paragraphs</option>
-      <option value="characters">Characters</option>
-    </select>
-
-    <label for="amount">Amount:</label>
-    <input type="number" id="amount" min="1" value="2" />
-
-    <button onclick="generateText()">Generate</button>
-    <textarea id="output" readonly></textarea>
-    <button class="outline-button" onclick="copyText()">Copy to Clipboard</button>
-  </div>
-
-  <script>
-    const loremSentences = [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-      "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.",
-      "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.",
-      "Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim.",
-      "Pellentesque congue. Ut in risus volutpat libero pharetra tempor.",
-      "Cras vestibulum bibendum augue. Praesent egestas leo in pede.",
-      "Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales.",
-      "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
-      "Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum.",
-      "Maecenas adipiscing ante non diam sodales hendrerit."
-    ];
-
-    function getRandomSentence() {
-      return loremSentences[Math.floor(Math.random() * loremSentences.length)];
-    }
-
-    function generateParagraph() {
-      const sentenceCount = Math.floor(Math.random() * 5) + 3; // 3 to 7 sentences
-      let paragraph = "";
-      for (let i = 0; i < sentenceCount; i++) {
-        paragraph += getRandomSentence() + " ";
+    if (mode === "paragraphs") {
+      for (let i = 0; i < amount; i++) {
+        output += generateParagraph(i === 0) + "\n\n";
       }
-      return paragraph.trim();
-    }
-
-    function generateText() {
-      const mode = document.getElementById("mode").value;
-      const amount = parseInt(document.getElementById("amount").value);
-      let output = "";
-
-      if (mode === "paragraphs") {
-        for (let i = 0; i < amount; i++) {
-          output += generateParagraph() + "\n\n";
-        }
-      } else {
-        while (output.length < amount) {
-          output += getRandomSentence() + " ";
-        }
-        output = output.slice(0, amount);
+    } else {
+      output = loremIntro + " ";
+      while (output.length < amount) {
+        output += getRandomSentence() + " ";
       }
-
-      document.getElementById("output").value = output;
+      output = output.slice(0, amount);
     }
 
-    function copyText() {
-      const textarea = document.getElementById("output");
-      textarea.select();
-      document.execCommand("copy");
-      alert("Copied to clipboard!");
-    }
-  </script>
-</body>
-</html>
+    document.getElementById("output").value = output;
+  }
+
+  function copyText() {
+    const textarea = document.getElementById("output");
+    textarea.select();
+    document.execCommand("copy");
+    alert("Copied to clipboard!");
+  }
+</script>
