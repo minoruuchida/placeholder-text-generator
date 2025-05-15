@@ -24,7 +24,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 18px; /* spacing between fields */
+      gap: 18px;
     }
 
     h1 {
@@ -69,6 +69,17 @@
       height: 200px;
       resize: vertical;
     }
+
+    #copy-status {
+      font-size: 0.95rem;
+      color: #10b981;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    #copy-status.visible {
+      visibility: visible;
+    }
   </style>
 </head>
 <body>
@@ -85,7 +96,9 @@
     <input type="number" id="amount" min="1" value="2" />
 
     <button onclick="generateText()">Generate</button>
+
     <textarea id="output" readonly></textarea>
+    <div id="copy-status">Copied to clipboard!</div>
   </div>
 
   <script>
@@ -136,12 +149,18 @@
       }
 
       const outputArea = document.getElementById("output");
+      const status = document.getElementById("copy-status");
       outputArea.value = output;
 
-      // Auto-copy to clipboard
+      // Auto-copy and show message
       outputArea.select();
       document.execCommand("copy");
-      alert("Text copied to clipboard!");
+      status.classList.add("visible");
+
+      // Optional: hide message after 3s
+      setTimeout(() => {
+        status.classList.remove("visible");
+      }, 3000);
     }
   </script>
 </body>
